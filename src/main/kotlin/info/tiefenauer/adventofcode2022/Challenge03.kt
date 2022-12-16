@@ -22,7 +22,7 @@ fun main() {
         .sumOf { it!! }
 
     println(partOne) // 8233
-    println(partTwo) //
+    println(partTwo) // 2821
 }
 
 private fun List<String>.findBadge() = first().toCharArray().find { all { s -> s.contains(it) } }
