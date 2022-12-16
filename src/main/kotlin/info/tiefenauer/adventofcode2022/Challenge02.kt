@@ -32,7 +32,7 @@ fun main() {
         .map { it.playStrategy() }
         .sumOf { calculateTotalScore(it) }
 
-    print(result)
+    print(result) // 12989
 }
 
 private fun List<String>.toRound() = when (true) {
