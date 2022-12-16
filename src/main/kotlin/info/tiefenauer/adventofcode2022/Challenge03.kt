@@ -8,15 +8,24 @@ val priorities = "${alphabet}${alphabet.uppercase()}"
     .associate { it }
 
 fun main() {
-    val result = File("src/main/resources/challenge03.txt")
-        .readLines()
+    val lines = File("src/main/resources/challenge03.txt").readLines()
+
+    val partOne = lines
         .map { it.splitInHalf() }
         .map { findInvalidElement(it.first, it.second) }
         .map { priorities[it] }
         .sumOf { it!! }
 
-    print(result) // 8233
+    val partTwo = lines.chunked(3)
+        .map { it.findBadge() }
+        .map { priorities[it] }
+        .sumOf { it!! }
+
+    println(partOne) // 8233
+    println(partTwo) //
 }
+
+private fun List<String>.findBadge() = first().toCharArray().find { all { s -> s.contains(it) } }
 
 fun findInvalidElement(first: String, second: String) =
     first.toCharArray().first { second.contains(it) }
