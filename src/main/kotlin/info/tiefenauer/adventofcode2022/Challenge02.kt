@@ -25,14 +25,20 @@ enum class MyChoice(val choice: String) {
 }
 
 fun main() {
-    val result = File("src/main/resources/challenge02.txt")
+    val rounds = File("src/main/resources/challenge02.txt")
         .readLines()
         .map { it.split(" ") }
         .mapNotNull { it.toRound() }
+
+    val partOne = rounds
+        .sumOf { calculateTotalScore(it) }
+
+    val partTwo = rounds
         .map { it.playStrategy() }
         .sumOf { calculateTotalScore(it) }
 
-    print(result) // 12989
+    println(partOne) // 15691
+    println(partTwo) // 12989
 }
 
 private fun List<String>.toRound() = when (true) {
@@ -40,7 +46,7 @@ private fun List<String>.toRound() = when (true) {
     else -> null
 }
 
-private fun Round.playStrategy() = when(second){
+private fun Round.playStrategy() = when (second) {
     MyChoice.ROCK -> Pair(first, first.getLoss())
     MyChoice.PAPER -> Pair(first, first.getDraw())
     MyChoice.SCISSORS -> Pair(first, first.getWin())
@@ -78,19 +84,19 @@ fun Round.isWin() = when (true) {
     else -> false
 }
 
-fun OpponentChoice.getLoss() = when(this){
+fun OpponentChoice.getLoss() = when (this) {
     OpponentChoice.ROCK -> MyChoice.SCISSORS
     OpponentChoice.PAPER -> MyChoice.ROCK
     OpponentChoice.SCISSORS -> MyChoice.PAPER
 }
 
-fun OpponentChoice.getDraw() = when(this){
+fun OpponentChoice.getDraw() = when (this) {
     OpponentChoice.ROCK -> MyChoice.ROCK
     OpponentChoice.PAPER -> MyChoice.PAPER
     OpponentChoice.SCISSORS -> MyChoice.SCISSORS
 }
 
-fun OpponentChoice.getWin() = when(this){
+fun OpponentChoice.getWin() = when (this) {
     OpponentChoice.ROCK -> MyChoice.PAPER
     OpponentChoice.PAPER -> MyChoice.SCISSORS
     OpponentChoice.SCISSORS -> MyChoice.ROCK
