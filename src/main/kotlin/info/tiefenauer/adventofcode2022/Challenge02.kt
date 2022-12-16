@@ -29,6 +29,7 @@ fun main() {
         .readLines()
         .map { it.split(" ") }
         .mapNotNull { it.toRound() }
+        .map { it.playStrategy() }
         .sumOf { calculateTotalScore(it) }
 
     print(result)
@@ -37,6 +38,12 @@ fun main() {
 private fun List<String>.toRound() = when (true) {
     (size == 2) -> Pair(OpponentChoice.parse(first())!!, MyChoice.parse(last())!!)
     else -> null
+}
+
+private fun Round.playStrategy() = when(second){
+    MyChoice.ROCK -> Pair(first, first.getLoss())
+    MyChoice.PAPER -> Pair(first, first.getDraw())
+    MyChoice.SCISSORS -> Pair(first, first.getWin())
 }
 
 fun calculateTotalScore(round: Round) =
@@ -69,4 +76,22 @@ fun Round.isWin() = when (true) {
     (first == OpponentChoice.ROCK && second == MyChoice.PAPER) -> true
 
     else -> false
+}
+
+fun OpponentChoice.getLoss() = when(this){
+    OpponentChoice.ROCK -> MyChoice.SCISSORS
+    OpponentChoice.PAPER -> MyChoice.ROCK
+    OpponentChoice.SCISSORS -> MyChoice.PAPER
+}
+
+fun OpponentChoice.getDraw() = when(this){
+    OpponentChoice.ROCK -> MyChoice.ROCK
+    OpponentChoice.PAPER -> MyChoice.PAPER
+    OpponentChoice.SCISSORS -> MyChoice.SCISSORS
+}
+
+fun OpponentChoice.getWin() = when(this){
+    OpponentChoice.ROCK -> MyChoice.PAPER
+    OpponentChoice.PAPER -> MyChoice.SCISSORS
+    OpponentChoice.SCISSORS -> MyChoice.ROCK
 }
